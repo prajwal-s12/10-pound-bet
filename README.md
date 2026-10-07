@@ -2,7 +2,7 @@
 
 A gamified daily to-do list. Set your tasks for the day: finish them all by midnight and win £1, leave one undone and you owe £10 (plus a one-tap reason why).
 
-- **Site:** https://p7212001.github.io/10-pound-bet/
+- **Site:** https://prajwal-s12.github.io/10-pound-bet/
 - **Hosting:** GitHub Pages (static `index.html`)
 - **Login + database:** Firebase Authentication (Google, email/password) and Cloud Firestore, Spark (free) plan
 

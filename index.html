@@ -323,6 +323,7 @@ main { padding-block: 24px 64px; }
       <div class="auth" id="auth" hidden>
         <h2 id="authTitle">Start betting on yourself</h2>
         <button class="gbtn" type="button" data-act="google"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Continue with Google</button>
+        <p class="err" id="authErr" hidden></p>
         <div class="or">or with email</div>
         <form id="authForm" autocomplete="on">
           <input id="authName" type="text" placeholder="First name" autocomplete="given-name" maxlength="40" aria-label="First name" hidden>
@@ -330,7 +331,6 @@ main { padding-block: 24px 64px; }
           <input id="authPass" type="password" placeholder="Password (6+ characters)" autocomplete="current-password" minlength="6" required aria-label="Password">
           <button class="btn accent" type="submit" id="authSubmit">Sign in</button>
         </form>
-        <p class="err" id="authErr" hidden></p>
         <div class="swap"><span><span id="swapLead">New here?</span> <button class="linkbtn" type="button" data-act="swapMode" id="swapBtn">Create an account</button></span><button class="linkbtn" type="button" data-act="forgot" id="forgotBtn">Forgot password?</button></div>
       </div>
     </div>
@@ -1019,6 +1019,7 @@ function setAuthMode(m) {
 function authMsg(msg, ok) {
   const el = $("#authErr");
   el.hidden = !msg; el.textContent = msg || ""; el.className = ok ? "ok" : "err";
+  if (msg) el.scrollIntoView({ block: "nearest", behavior: "smooth" });
 }
 const AUTH_ERR = {
   "auth/invalid-credential": "That email and password don't match. Check them, or create an account.",
@@ -1031,7 +1032,7 @@ const AUTH_ERR = {
   "auth/popup-closed-by-user": "",
   "auth/cancelled-popup-request": "",
   "auth/popup-blocked": "Your browser blocked the Google window. Allow pop-ups for this site and try again.",
-  "auth/unauthorized-domain": "Google sign-in isn't enabled for this web address yet. Use email for now.",
+  "auth/unauthorized-domain": `Google sign-in isn't switched on for ${location.hostname} yet. Use email for now.`,
   "auth/operation-not-allowed": "This sign-in method isn't switched on yet. Try the other one."
 };
 const authErr = e => AUTH_ERR[e && e.code] ?? "Couldn't sign in. Check your connection and try again.";
