@@ -9,10 +9,12 @@ A gamified daily to-do list. Set your tasks for the day: finish them all by midn
 ## Files
 - `index.html` — the whole app
 - `config.js` — Firebase web config (public values)
-- `firestore.rules` — database security rules: each user can only access `users/{their uid}` and its `days` subcollection
+- `firestore.rules` — database security rules: each user can only access `users/{their uid}` and its `days` subcollection; `leaderboard` is readable by any signed-in player
 
 ## Data model
 - `users/{uid}` — `{ payTo, daily: [task text], payments: [{id, at, amount, method}] }`
 - `users/{uid}/days/{YYYY-MM-DD}` — `{ date, tasks: [{id, text, done, missed?, reason?, reasonTag?}], settled, outcome: won|lost|void, stake, reward }`
+
+- `leaderboard/{uid}` — public scorecard, numbers only: `{ name, photo, streak, streakEnd, best, won, lost, rate, owes, today, todayDone, todayTotal, todayStatus, updatedAt }`. Readable by any signed-in player; each player writes only their own. "Hide me" deletes it.
 
 Days settle lazily: when a player opens the app, any earlier unsettled day is scored (all done = won, otherwise lost) and lost days prompt for reasons.

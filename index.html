@@ -70,13 +70,15 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .note { display: grid; place-items: center; width: 46px; height: 28px; border-radius: 4px; background: var(--tenner); color: var(--on-tenner); font: 800 17px/1 var(--f-display); letter-spacing: .02em; position: relative; box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--on-tenner) 25%, transparent); }
 .brand-name { font: 800 22px/1 var(--f-display); letter-spacing: .01em; text-transform: uppercase; }
 .tabs { display: flex; gap: 4px; background: var(--chip); padding: 4px; border-radius: 999px; order: 3; }
+.tab .short { display: none; }
 .tab { border: 0; background: transparent; padding: 7px 16px; border-radius: 999px; font-weight: 600; font-size: 14px; color: var(--muted); }
 .tab[aria-selected="true"] { background: var(--card); color: var(--ink); box-shadow: var(--shadow); }
 .who { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); order: 4; }
 .who img { width: 30px; height: 30px; border-radius: 50%; }
 @media (max-width: 640px) {
   .tabs { order: 5; width: 100%; justify-content: space-between; }
-  .tab { flex: 1; }
+  .tab { flex: 1; padding: 7px 6px; font-size: 13.5px; }
+  .tab .long { display: none; } .tab .short { display: inline; }
   .who span { display: none; }
 }
 
@@ -229,7 +231,8 @@ main { padding-block: 24px 64px; }
 .bar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; font-size: 14px; }
 .bar .track { grid-column: 1 / -1; height: 8px; border-radius: 4px; background: var(--chip); overflow: hidden; }
 .bar .fill { height: 100%; background: var(--loss); border-radius: 4px; }
-.filters { display: flex; gap: 6px; }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.fchip { white-space: nowrap; }
 .fchip { border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 4px 12px; font-size: 13px; font-weight: 600; color: var(--muted); }
 .fchip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .hist { display: grid; }
@@ -271,6 +274,37 @@ main { padding-block: 24px 64px; }
 .pays .rm { border: 0; background: none; color: var(--muted); font-size: 12.5px; text-decoration: underline; padding: 4px; }
 .pays .rm.arm { color: var(--loss); font-weight: 700; }
 
+/* Leaderboard */
+.lb-me { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; padding: 12px 14px; border-radius: 12px; background: var(--chip); margin-bottom: 14px; font-size: 14px; }
+.lb-me .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.lb-me form { display: flex; gap: 8px; flex: 1; min-width: 220px; }
+.lb-me input { flex: 1; min-width: 0; border: 1.5px solid var(--line); background: var(--card); border-radius: 8px; padding: 7px 10px; }
+.lb-me input:focus { border-color: var(--tenner); outline: none; }
+.lb { list-style: none; margin: 0; padding: 0; }
+.lrow { display: grid; grid-template-columns: 34px 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 12px 6px; border-bottom: 1px solid var(--line); }
+.lrow:last-child { border-bottom: 0; }
+.lrow.me { background: var(--tenner-soft); border-radius: 12px; border-bottom-color: transparent; padding-inline: 10px; }
+.rk { font: 800 24px/1 var(--f-display); color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
+.rk.podium { color: var(--tenner); }
+.av { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: var(--chip); }
+.pl { min-width: 0; }
+.pl b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pl b small { font: 600 10.5px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--tenner); margin-left: 6px; }
+.pl .meta { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.tday { display: flex; align-items: center; gap: 8px; margin-top: 6px; font: 500 12px var(--f-mono); color: var(--muted); }
+.tbar { width: 90px; max-width: 40%; height: 6px; border-radius: 3px; background: var(--chip); overflow: hidden; flex: none; }
+.lrow.me .tbar { background: var(--card); }
+.tbar i { display: block; height: 100%; background: var(--tenner); border-radius: 3px; }
+.tday.won { color: var(--win); } .tday.won .tbar i { background: var(--win); }
+.tday.lost { color: var(--loss); } .tday.lost .tbar i { background: var(--loss); }
+.lv { text-align: right; }
+.lv b { display: block; font: 800 30px/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.lv small { font: 500 10.5px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.lb-empty { padding: 18px 4px 6px; color: var(--muted); }
+.lb-empty .link { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.lb-empty code { font: 13px var(--f-mono); background: var(--chip); padding: 8px 10px; border-radius: 8px; color: var(--ink); overflow-wrap: anywhere; user-select: all; }
+@media (max-width: 520px) { .lrow { grid-template-columns: 26px 34px minmax(0, 1fr) auto; gap: 10px; } .av { width: 34px; height: 34px; } .lv b { font-size: 26px; } }
+
 /* Reason sheet */
 .scrim { position: fixed; inset: 0; background: rgba(8,12,18,.5); z-index: 50; display: grid; place-items: end center; padding: 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
 @media (min-width: 640px) { .scrim { place-items: center; } }
@@ -308,6 +342,7 @@ main { padding-block: 24px 64px; }
     <nav class="tabs" id="tabs" role="tablist" hidden>
       <button class="tab" role="tab" id="tab-today" data-tab="today" aria-selected="true">Today</button>
       <button class="tab" role="tab" id="tab-progress" data-tab="progress" aria-selected="false">Progress</button>
+      <button class="tab" role="tab" id="tab-board" data-tab="board" aria-selected="false"><span class="long">Leaderboard</span><span class="short">Board</span></button>
       <button class="tab" role="tab" id="tab-ledger" data-tab="ledger" aria-selected="false">Ledger</button>
     </nav>
     <div class="who" id="who" hidden></div>
@@ -361,6 +396,7 @@ main { padding-block: 24px 64px; }
   <div id="banner"></div>
   <section id="view-today" class="view"></section>
   <section id="view-progress" class="view" hidden></section>
+  <section id="view-board" class="view" hidden></section>
   <section id="view-ledger" class="view" hidden></section>
 </main>
 
@@ -371,10 +407,11 @@ main { padding-block: 24px 64px; }
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc as fdoc, collection as fcol, query as fquery, orderBy as forderBy, limit as flimit, getDoc, getDocs, setDoc, onSnapshot as fsnap } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc as fdoc, collection as fcol, query as fquery, orderBy as forderBy, limit as flimit, getDoc, getDocs, setDoc, deleteDoc, onSnapshot as fsnap } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 (() => {
 "use strict";
 const STAKE = 10, REWARD = 1;
+const TABS = ["today", "progress", "board", "ledger"];
 const REASONS = ["Ran out of time", "Too tired", "Got distracted", "Something came up", "Took on too much", "Forgot", "Felt unwell"];
 const ICON = {
   check: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg>',
@@ -431,8 +468,44 @@ function writeError(e) {
   else if (c === "resource-exhausted") toast("The site is busy right now, so that change wasn't saved. Try again shortly.");
   else toast("Couldn't save that change. Check your connection and try again.");
 }
-const saveDay = k => queueWrite(S.daysRef.doc(k), S.days[k]);
-const saveProfile = () => queueWrite(S.profileRef, S.profile);
+const saveDay = k => { queueWrite(S.daysRef.doc(k), S.days[k]); scheduleBoard(); };
+const saveProfile = () => { queueWrite(S.profileRef, S.profile); scheduleBoard(); };
+
+/* ---------- leaderboard: a public scorecard per player (numbers only, never task text) ---------- */
+const BOARD = { ref: null, col: null, rows: [], unsub: null, error: false, sort: "streak", editing: false, last: null, timer: null, writing: false, again: false };
+const boardName = () => (S.profile.board.name || (S.authName || "").split(" ")[0] || "").trim().slice(0, 30);
+function boardEntry() {
+  const st = stats(), d = S.days[S.todayKey], t = d ? d.tasks : [];
+  return {
+    name: boardName() || "Player", photo: S.authPhoto || "",
+    streak: st.cur, streakEnd: st.curEnd || "", best: st.best,
+    won: st.won, lost: st.lost, rate: st.rate == null ? -1 : st.rate, owes: st.outstanding,
+    today: S.todayKey, todayDone: t.filter(x => x.done).length, todayTotal: t.length, todayStatus: liveOutcome(d)
+  };
+}
+function scheduleBoard() {
+  if (!BOARD.ref) return;
+  clearTimeout(BOARD.timer); BOARD.timer = setTimeout(publishBoard, 1200);
+}
+async function publishBoard() {
+  if (!BOARD.ref || !S.profile.board.show) return;
+  if (BOARD.writing) { BOARD.again = true; return; }
+  const e = boardEntry(), j = JSON.stringify(e);
+  if (j === BOARD.last) return;
+  BOARD.writing = true;
+  try { await BOARD.ref.set({ ...e, updatedAt: Date.now() }); BOARD.last = j; BOARD.error = false; }
+  catch (err) { BOARD.error = true; if (S.tab === "board") renderBoard(); }
+  BOARD.writing = false;
+  if (BOARD.again) { BOARD.again = false; publishBoard(); }
+}
+function watchBoard() {
+  if (BOARD.unsub || !BOARD.col) return;
+  BOARD.unsub = BOARD.col.limit(300).onSnapshot(snap => {
+    BOARD.rows = snap.docs.map(x => ({ id: x.id, ...x.data() }));
+    BOARD.error = false;
+    if (S.tab === "board") renderBoard();
+  }, () => { BOARD.error = true; BOARD.unsub = null; if (S.tab === "board") renderBoard(); });
+}
 
 function normProfile(p) {
   p = p || {};
@@ -440,7 +513,8 @@ function normProfile(p) {
     createdAt: p.createdAt || Date.now(),
     payTo: typeof p.payTo === "string" ? p.payTo : "",
     daily: Array.isArray(p.daily) ? p.daily.filter(x => typeof x === "string") : [],
-    payments: Array.isArray(p.payments) ? p.payments.filter(x => x && typeof x.amount === "number") : []
+    payments: Array.isArray(p.payments) ? p.payments.filter(x => x && typeof x.amount === "number") : [],
+    board: { show: !(p.board && p.board.show === false), name: p.board && typeof p.board.name === "string" ? p.board.name : "" }
   };
 }
 function normDay(k, d) {
@@ -513,8 +587,9 @@ function stats() {
     run = prev && dkey(addDays(parseKey(prev), 1)) === k ? run + 1 : 1;
     best = Math.max(best, run); prev = k;
   }
+  const curEnd = cur ? (wonSet.has(S.todayKey) ? S.todayKey : dkey(addDays(parseKey(S.todayKey), -1))) : null;
   const decided = won + lost;
-  return { won, lost, owed, earned, paidCash, paidWin, outstanding, winnings, cur, best,
+  return { won, lost, owed, earned, paidCash, paidWin, outstanding, winnings, cur, curEnd, best,
     rate: decided ? Math.round(won / decided * 100) : null,
     taskRate: tAll ? Math.round(tDone / tAll * 100) : null };
 }
@@ -579,10 +654,11 @@ function render() { keepTyping(renderAll); }
 function renderAll() {
   $("#landing").hidden = true; $("#app").hidden = false; $("#tabs").hidden = false;
   for (const b of document.querySelectorAll(".tab")) b.setAttribute("aria-selected", String(b.dataset.tab === S.tab));
-  for (const v of ["today", "progress", "ledger"]) $("#view-" + v).hidden = v !== S.tab;
+  for (const v of TABS) $("#view-" + v).hidden = v !== S.tab;
   renderBanner();
   if (S.tab === "today") renderToday();
   if (S.tab === "progress") renderProgress();
+  if (S.tab === "board") { watchBoard(); renderBoard(); }
   if (S.tab === "ledger") renderLedger();
 }
 
@@ -809,6 +885,70 @@ function renderLedger() {
     </div>`;
 }
 
+function renderBoard() {
+  if (S.tab !== "board") return;
+  const yKey = dkey(addDays(parseKey(S.todayKey), -1));
+  const me = S.uid, show = S.profile.board.show;
+  const rows = BOARD.rows.map(r => {
+    const live = r.streakEnd && r.streakEnd >= yKey;           // a streak only counts if it reaches yesterday or today
+    const onToday = r.today === S.todayKey;
+    return {
+      ...r, isMe: r.id === me,
+      streakNow: live ? (r.streak | 0) : 0,
+      rateN: typeof r.rate === "number" && r.rate >= 0 ? r.rate : null,
+      tDone: onToday ? (r.todayDone | 0) : 0, tTotal: onToday ? (r.todayTotal | 0) : 0,
+      tStatus: onToday ? r.todayStatus : "empty"
+    };
+  }).filter(r => show || !r.isMe);
+  const SORTS = {
+    streak: { label: "Streak", key: r => [r.streakNow, r.best, r.won], val: r => r.streakNow, unit: () => "day streak" },
+    rate: { label: "Win rate", key: r => [r.rateN ?? -1, r.won], val: r => r.rateN == null ? "–" : r.rateN + "%", unit: () => "win rate" },
+    won: { label: "Days won", key: r => [r.won | 0, r.streakNow], val: r => r.won | 0, unit: () => "days won" },
+    owes: { label: "Owes most", key: r => [r.owes || 0, r.lost | 0], val: r => money(r.owes || 0), unit: () => "owes" }
+  };
+  const so = SORTS[BOARD.sort];
+  rows.sort((a, b) => { const ka = so.key(a), kb = so.key(b); for (let i = 0; i < ka.length; i++) if (kb[i] !== ka[i]) return kb[i] - ka[i]; return String(a.name).localeCompare(String(b.name)); });
+
+  const todayLine = r => {
+    if (!r.tTotal) return `<div class="tday">No slip yet today</div>`;
+    const pct = Math.round(r.tDone / r.tTotal * 100);
+    const lbl = r.tStatus === "won" ? "All done today" : r.tStatus === "lost" ? `Lost today · ${r.tDone}/${r.tTotal}` : `${r.tDone}/${r.tTotal} done today`;
+    return `<div class="tday ${r.tStatus === "won" ? "won" : r.tStatus === "lost" ? "lost" : ""}"><span class="tbar"><i style="width:${r.tStatus === "lost" ? 100 : pct}%"></i></span>${lbl}</div>`;
+  };
+  const list = rows.map((r, i) => `<li class="lrow ${r.isMe ? "me" : ""}">
+      <span class="rk ${i < 3 ? "podium" : ""}">${i + 1}</span>
+      <img class="av" alt="" referrerpolicy="no-referrer" src="${esc(/^https:\/\//.test(r.photo || "") ? r.photo : initials(r.name))}">
+      <div class="pl"><b>${esc(r.name || "Player")}${r.isMe ? "<small>You</small>" : ""}</b>
+        <div class="meta">${r.rateN == null ? "No settled days yet" : `${r.rateN}% win rate · ${r.won | 0} won · best streak ${r.best | 0}`}${r.owes ? ` · owes ${money(r.owes)}` : ""}</div>
+        ${todayLine(r)}</div>
+      <div class="lv"><b>${so.val(r)}</b><small>${so.unit(r)}</small></div>
+    </li>`).join("");
+
+  const meBar = BOARD.editing
+    ? `<form id="boardNameForm"><input id="boardName" maxlength="30" placeholder="Name shown to other players" value="${esc(boardName())}" aria-label="Leaderboard name"><button class="btn small accent" type="submit">Save</button><button class="btn small ghost" type="button" data-act="boardCancel">Cancel</button></form>`
+    : show
+      ? `<span>You appear as <b>${esc(boardName() || "Player")}</b>. Others see your numbers, never your tasks or reasons.</span><span class="acts"><button class="btn small ghost" data-act="boardEdit">${boardName() ? "Change name" : "Set your name"}</button><button class="btn small ghost" data-act="boardHide">Hide me</button></span>`
+      : `<span>You're hidden from the leaderboard.</span><span class="acts"><button class="btn small accent" data-act="boardShow">Show me</button></span>`;
+
+  const others = rows.filter(r => !r.isMe).length;
+  const invite = `<div class="lb-empty">${others ? "" : "No one else is here yet. Send friends the link so they can join:"}
+      <div class="link"><code>${esc(location.origin + location.pathname)}</code><button class="btn small ghost" data-act="copyLink">Copy link</button></div></div>`;
+
+  $("#view-board").innerHTML = `
+    <div class="card">
+      <div class="hd"><h3>Leaderboard</h3>
+        <div class="filters" role="group" aria-label="Sort leaderboard">
+          ${Object.entries(SORTS).map(([k, v]) => `<button class="fchip" data-act="boardSort" data-s="${k}" aria-pressed="${BOARD.sort === k}">${v.label}</button>`).join("")}
+        </div>
+      </div>
+      <div class="lb-me">${meBar}</div>
+      ${BOARD.error ? `<p class="lb-empty" style="color:var(--loss)">The leaderboard couldn't load. It may not be switched on in the database yet; try again in a few minutes.</p>`
+        : !BOARD.unsub && !BOARD.rows.length ? `<p class="lb-empty">Loading players…</p>`
+        : `<ol class="lb">${list}</ol>${others < 3 ? invite : ""}`}
+    </div>`;
+  if (BOARD.editing) { const n = $("#boardName"); n.focus(); n.select(); }
+}
+
 /* ---------- reason sheet ---------- */
 let sheet = null; // { k, ids, mode, picks }
 function openReasons(k, ids, mode) {
@@ -877,6 +1017,12 @@ document.addEventListener("submit", e => {
     renderToday.focusNext = true; addTask(v);
     if (!v.trim()) $("#newTask").focus();
   }
+  if (e.target.id === "boardNameForm") {
+    e.preventDefault();
+    S.profile.board.name = $("#boardName").value.trim().slice(0, 30);
+    BOARD.editing = false; saveProfile(); renderBoard(); toast("Name saved");
+    return;
+  }
   if (e.target.id === "payForm") {
     e.preventDefault();
     const st = stats();
@@ -906,6 +1052,20 @@ document.addEventListener("click", e => {
     case "carry": carryOver(el.dataset.k); break;
     case "home": e.preventDefault(); if (S.uid) setTab("today"); break;
     case "goLedger": setTab("ledger"); break;
+    case "boardSort": BOARD.sort = el.dataset.s; renderBoard(); break;
+    case "boardEdit": BOARD.editing = true; renderBoard(); break;
+    case "boardCancel": BOARD.editing = false; renderBoard(); break;
+    case "boardHide":
+      S.profile.board.show = false; saveProfile(); BOARD.last = null;
+      if (BOARD.ref) BOARD.ref.delete().catch(() => {});
+      renderBoard(); toast("You're hidden from the leaderboard"); break;
+    case "boardShow":
+      S.profile.board.show = true; saveProfile(); publishBoard(); renderBoard(); toast("You're back on the leaderboard"); break;
+    case "copyLink": {
+      const url = location.origin + location.pathname;
+      (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => toast("Link copied"), () => toast("Select the link and copy it"));
+      break;
+    }
     case "goProgress": setTab("progress"); break;
     case "filter": S.filter = el.dataset.f; renderProgress(); break;
     case "method": S.payMethod = el.dataset.m; renderLedger(); break;
@@ -986,6 +1146,7 @@ function docRef(path) {
     path, id: r.id,
     get: async () => wrap(await getDoc(r)),
     set: d => setDoc(r, d),
+    delete: () => deleteDoc(r),
     onSnapshot: (n, e) => fsnap(r, x => n(wrap(x)), e),
     collection: c => colRef(path + "/" + c)
   };
@@ -1045,7 +1206,7 @@ document.addEventListener("submit", async e => {
   try {
     if (authMode === "signup") {
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      if (name) { await updateProfile(cred.user, { displayName: name }); S.me = { name, avatarUrl: "" }; }
+      if (name) { await updateProfile(cred.user, { displayName: name }); S.me = { name, avatarUrl: "" }; S.authName = name; scheduleBoard(); }
     } else await signInWithEmailAndPassword(auth, email, pass);
   } catch (err) { authMsg(authErr(err)); }
   btn.disabled = false;
@@ -1093,6 +1254,8 @@ function start() {
     gate("Loading your slips…", true);
     const name = u.displayName || (S.me && S.me.name) || (u.email || "").split("@")[0];
     S.me = { name, avatarUrl: u.photoURL || initials(name) };
+    S.authName = u.displayName || S.authName || "";
+    S.authPhoto = u.photoURL || "";
     await loadApp(u.uid);
   });
 }
@@ -1101,6 +1264,8 @@ async function loadApp(uid) {
   S.uid = uid;
   S.profileRef = docRef(`users/${uid}`);
   S.daysRef = S.profileRef.collection("days");
+  BOARD.col = colRef("leaderboard");
+  BOARD.ref = docRef(`leaderboard/${uid}`);
   try {
     const [p, ds] = await Promise.all([S.profileRef.get(), S.daysRef.orderBy("date", "desc").limit(800).get()]);
     S.profile = normProfile(p.exists ? p.data() : null);
@@ -1109,8 +1274,8 @@ async function loadApp(uid) {
     gate("Couldn't load your slips. Reload the page to try again.");
     return;
   }
-  try { const t = localStorage.getItem("tpb-tab"); if (["today", "progress", "ledger"].includes(t)) S.tab = t; } catch (_) {}
-  const hash = (location.hash || "").slice(1); if (["today", "progress", "ledger"].includes(hash)) S.tab = hash;
+  try { const t = localStorage.getItem("tpb-tab"); if (TABS.includes(t)) S.tab = t; } catch (_) {}
+  const hash = (location.hash || "").slice(1); if (TABS.includes(hash)) S.tab = hash;
 
   const who = $("#who");
   who.hidden = false;
@@ -1122,6 +1287,7 @@ async function loadApp(uid) {
   S.lastOutcome = liveOutcome(S.days[S.todayKey]);
   render();
   nextInQueue();
+  publishBoard();
 
   S.profileRef.onSnapshot(snap => {
     if (busy(S.profileRef.path) || !snap.exists) return;
@@ -1146,7 +1312,7 @@ async function loadApp(uid) {
     const cd = $("#countdown"); if (cd) cd.textContent = timeLeft();
     const k = dkey();
     if (k !== S.todayKey) {
-      S.todayKey = k; settlePast(); ensureToday();
+      S.todayKey = k; settlePast(); ensureToday(); scheduleBoard();
       S.lastOutcome = liveOutcome(S.days[k]); render();
       if (!sheet) nextInQueue();
     }

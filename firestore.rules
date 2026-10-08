@@ -1,12 +1,21 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Each player can only read and write their own profile and day slips.
+    // Each player's tasks, reasons and payments: only they can read or write them.
     match /users/{uid} {
       allow read, write: if request.auth != null && request.auth.uid == uid;
       match /days/{day} {
         allow read, write: if request.auth != null && request.auth.uid == uid;
       }
+    }
+    // Leaderboard scorecards (numbers only): any signed-in player can read,
+    // each player can only write or remove their own.
+    match /leaderboard/{uid} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['name', 'photo', 'streak', 'streakEnd', 'best', 'won', 'lost', 'rate', 'owes', 'today', 'todayDone', 'todayTotal', 'todayStatus', 'updatedAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 30;
+      allow delete: if request.auth != null && request.auth.uid == uid;
     }
   }
 }
